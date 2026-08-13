@@ -104,6 +104,11 @@
             </a>
         </p>
 
+        @if (message()) {
+        <p [class]="niveauMessage()">
+            {{ message() }}
+        </p>
+        }
     </div>
 
 </div>

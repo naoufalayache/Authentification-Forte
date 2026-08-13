@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -7,6 +7,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { RegisterRequest } from '../../models/model';
+import { AuthService } from '../../services/auth.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-inscription',
@@ -16,8 +19,13 @@ import { RouterLink } from '@angular/router';
 })
 export class Inscription {
   inscriptionForm;
+  protected niveauMessage = signal<string>('')
+  protected message = signal<string>('')
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+  ) {
     this.inscriptionForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
@@ -43,6 +51,21 @@ export class Inscription {
       return;
     }
 
-    console.log('Valeurs :', this.inscriptionForm.value);
+    const request: RegisterRequest = {
+      email: this.inscriptionForm.value.email!,
+      password: this.inscriptionForm.value.password!,
+      confirmPassword: this.inscriptionForm.value.confirmPassword!,
+    };
+
+    this.authService.register(request).subscribe({
+      next: () => {
+        this.niveauMessage.set('success');
+        this.message.set('Vous vous êtes bien créé un compte !');
+      },
+      error: (error) => {
+        this.niveauMessage.set('error');
+        this.message.set(error.error?.message ?? "Erreur lors de l'inscription");
+      },
+    });
   };
 }
