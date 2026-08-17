@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.naoufalayache.DTO.LoginDTO;
 import com.naoufalayache.DTO.RegisterDTO;
-import com.naoufalayache.authentication.model.User;
 import com.naoufalayache.authentication.services.AuthService;
 
 import org.springframework.http.HttpStatus;
