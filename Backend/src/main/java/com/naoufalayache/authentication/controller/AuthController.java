@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public User register(
+    public String register(
         @RequestBody RegisterDTO registerDTO
     ) {
         return authService.register(registerDTO);
@@ -33,7 +33,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public User login(
+    public String login(
         @RequestBody LoginDTO loginDTO
     ) {
         return authService.login(loginDTO);

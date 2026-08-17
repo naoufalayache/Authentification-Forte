@@ -8,20 +8,23 @@ import com.naoufalayache.DTO.RegisterDTO;
 import com.naoufalayache.authentication.model.User;
 import com.naoufalayache.authentication.repository.UserRepository;
 import com.naoufalayache.authentication.services.AuthService;
+import com.naoufalayache.authentication.services.JwtService;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final JwtService jwtService;
     private final String erreur = "Les identifiants ne sont pas bons, veuillez réessayer";
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-    public AuthServiceImpl(UserRepository userRepository){
+    public AuthServiceImpl(UserRepository userRepository, JwtService jwtService){
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     @Override
-    public User register(RegisterDTO registerDTO) {
+    public String register(RegisterDTO registerDTO) {
         if (userRepository.existsByEmail(registerDTO.getEmail())){
             throw new IllegalArgumentException(erreur);
         }
@@ -36,11 +39,11 @@ public class AuthServiceImpl implements AuthService {
 
         user.setEnabled(true);
 
-        return userRepository.save(user);
+        return jwtService.generateToken(user.getEmail());
     }
 
     @Override
-    public User login(LoginDTO loginDTO) {
+    public String login(LoginDTO loginDTO) {
         User user = userRepository.findByEmail(loginDTO.getEmail())
             .orElseThrow(()->new IllegalArgumentException(erreur));
         
@@ -48,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException(erreur);
         }
 
-        return user;
+        return jwtService.generateToken(user.getEmail());
     }
     
 }
