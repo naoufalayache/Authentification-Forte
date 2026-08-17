@@ -1,8 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { LoginRequest } from '../../models/model';
+import { AuthResponse, LoginRequest } from '../../models/model';
+import { CoockieService } from '../../services/coockie.service';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,8 @@ export class Login {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private coockieService: CoockieService,
+    private router: Router,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -30,22 +33,25 @@ export class Login {
       this.loginForm.markAllAsTouched();
       return;
     }
-    
+
     const request: LoginRequest = {
       email: this.loginForm.value.email!,
-      password: this.loginForm.value.password!
-    }
+      password: this.loginForm.value.password!,
+    };
 
     this.authService.login(request).subscribe({
-      next: () => {
+      next: (response: AuthResponse) => {
+        this.coockieService.setToken(response.token);
         this.niveauMessage.set('success');
         this.message.set('Vous vous êtes bien connecté !');
+        setTimeout(() => {
+          this.router.navigate(['/home']);
+        }, 3000);
       },
       error: (error) => {
         this.niveauMessage.set('error');
         this.message.set(error.error?.message ?? "Erreur lors de l'inscription");
       },
     });
-    
   };
 }

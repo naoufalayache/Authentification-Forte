@@ -13,4 +13,10 @@ export const routes: Routes = [
     component: Inscription,
     title: 'Inscription',
   },
+  
+  {
+    path: 'home',
+    component: Inscription,
+    title: 'Accueil',
+  },
 ];

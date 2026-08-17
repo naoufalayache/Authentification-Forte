@@ -6,10 +6,10 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { RegisterRequest } from '../../models/model';
+import { Router, RouterLink } from '@angular/router';
+import { AuthResponse, RegisterRequest } from '../../models/model';
 import { AuthService } from '../../services/auth.service';
-import { response } from 'express';
+import { CoockieService } from '../../services/coockie.service';
 
 @Component({
   selector: 'app-inscription',
@@ -19,12 +19,14 @@ import { response } from 'express';
 })
 export class Inscription {
   inscriptionForm;
-  protected niveauMessage = signal<string>('')
-  protected message = signal<string>('')
+  protected niveauMessage = signal<string>('');
+  protected message = signal<string>('');
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private coockieService: CoockieService,
+    private router: Router
   ) {
     this.inscriptionForm = this.fb.group(
       {
@@ -58,9 +60,13 @@ export class Inscription {
     };
 
     this.authService.register(request).subscribe({
-      next: () => {
+      next: (response: AuthResponse) => {
+        this.coockieService.setToken(response.token);
         this.niveauMessage.set('success');
         this.message.set('Vous vous êtes bien créé un compte !');
+        setTimeout(() => {
+          this.router.navigate(['/home']);
+        }, 3000);
       },
       error: (error) => {
         this.niveauMessage.set('error');

@@ -17,6 +17,10 @@ export interface RegisterRequest {
   confirmPassword: string;
 }
 
+export interface AuthResponse {
+  token: string;
+}
+
 export interface Config {
   apiUrl: string;
 }
