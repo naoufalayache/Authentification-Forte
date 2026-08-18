@@ -1,3 +1,14 @@
-<h1>Accueil</h1>
+<div class="header">
+    <h1>Accueil</h1>
+    <button (click)="logout()">Se déconnecter</button>
+</div>
 
-<p>Bienvenue sur l'application.</p>
+@if (pseudo !== null) {
+<p>
+    Bonjour {{ pseudo }}
+</p>
+} @else{
+<p>
+    Bienvenue sur l'application.
+</p>
+}

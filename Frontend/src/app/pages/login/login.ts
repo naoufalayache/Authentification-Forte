@@ -43,7 +43,7 @@ export class Login {
       next: (response: AuthResponse) => {
         this.coockieService.setToken(response.token);
         this.niveauMessage.set('success');
-        this.message.set('Vous vous êtes bien connecté !');
+        this.message.set('Vous vous êtes bien connecté ! Redirection en cours...');
         setTimeout(() => {
           this.router.navigate(['/home']);
         }, 3000);

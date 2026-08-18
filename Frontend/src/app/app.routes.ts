@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { Login } from './pages/login/login';
 import { Inscription } from './pages/inscription/inscription';
+import { Home } from './pages/home/home';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
   {
@@ -16,7 +18,8 @@ export const routes: Routes = [
   
   {
     path: 'home',
-    component: Inscription,
+    component: Home,
     title: 'Accueil',
+    canActivate: [authGuard]
   },
 ];

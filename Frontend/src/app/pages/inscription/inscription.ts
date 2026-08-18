@@ -63,7 +63,7 @@ export class Inscription {
       next: (response: AuthResponse) => {
         this.coockieService.setToken(response.token);
         this.niveauMessage.set('success');
-        this.message.set('Vous vous êtes bien créé un compte !');
+        this.message.set('Vous vous êtes bien créé un compte ! Redirection en cours...');
         setTimeout(() => {
           this.router.navigate(['/home']);
         }, 3000);
