@@ -11,14 +11,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import com.nimbusds.jose.jwk.source.ImmutableSecret;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,7 +38,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 //No token needed
-                .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers("/api/v1/auth/login").permitAll()
+                .requestMatchers("/api/v1/auth/register").permitAll()
 
                 //Token needed
                 .anyRequest().authenticated()
@@ -51,10 +53,27 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtEncoder jwtEncoder(){
-        SecretKey secretKey = new SecretKeySpec(this.secretKey.getBytes(),"HmacSHA256");
+    public SecretKey jwSecretKey(){
+        return new SecretKeySpec(
+            this.secretKey.getBytes(),
+            "HmacSHA256"
+        );
+    }
 
-        return new NimbusJwtEncoder(new ImmutableSecret<>(secretKey));
+    @Bean
+    public JwtDecoder jwtDecode(SecretKey secretKey){
+        return NimbusJwtDecoder
+                .withSecretKey(secretKey)
+                .macAlgorithm(MacAlgorithm.HS256)
+                .build();
+    }
+
+    @Bean
+    public JwtEncoder jwtEncoder(SecretKey secretKey){
+        return NimbusJwtEncoder
+                .withSecretKey(secretKey)
+                .algorithm(MacAlgorithm.HS256)
+                .build();
     }
 
     @Bean
