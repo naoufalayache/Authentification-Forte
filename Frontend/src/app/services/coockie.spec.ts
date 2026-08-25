@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Coockie } from './coockie';
+import { CoockieService } from './coockie.service';
 
 describe('Coockie', () => {
-  let service: Coockie;
+  let service: CoockieService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Coockie);
+    service = TestBed.inject(CoockieService);
   });
 
   it('should be created', () => {
