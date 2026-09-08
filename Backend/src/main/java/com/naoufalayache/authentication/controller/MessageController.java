@@ -95,7 +95,7 @@ public class MessageController {
     }
 
     @DeleteMapping
-    public ResponseDTO deleteMessagesOrConv(
+    public ResponseDTO deleteMessage(
             @RequestBody DeleteConvDTO deleteConvDTO) {
         
         Long userId = deleteConvDTO.getIdUser();
