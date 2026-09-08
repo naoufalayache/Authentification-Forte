@@ -13,7 +13,6 @@ export class AuthService {
     private http: HttpClient,
     private configService: ConfigService,
     private coockieService: CoockieService,
-    private router: Router,
   ) {}
 
   register(request: RegisterRequest) {
