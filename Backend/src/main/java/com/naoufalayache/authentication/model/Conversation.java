@@ -27,7 +27,7 @@ public class Conversation {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String value;
+    private String name;
 
     @Column(nullable = false, unique = true)
     private Boolean type;

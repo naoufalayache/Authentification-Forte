@@ -11,4 +11,5 @@ import com.naoufalayache.authentication.model.User;
 public interface ConversationMemberRepository extends JpaRepository<ConversationMember, Long> {
     public Optional<ConversationMember> findById(Long id);
     public Optional<ConversationMember> findByUserAndConversation(User user,Conversation conversation);
+    long countByConversationId(Long conversationId);
 }
