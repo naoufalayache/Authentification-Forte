@@ -24,3 +24,36 @@ export interface AuthResponse {
 export interface Config {
   apiUrl: string;
 }
+
+export interface Message {
+  id: number;
+  value: string;
+  idUser: number;
+  idConversation: number;
+  createdAt: string;
+}
+
+export interface MessageSended {
+  value: string;
+  idUser: number;
+  idConversation: number;
+  idMessage?: number;
+  createdAt?: string;
+}
+
+export interface Response {
+  httpStatus: string;
+  message: string;
+}
+
+export interface DeleteConv {
+  idMessage: number
+  idConversation: number
+  idUser: number
+}
+
+export interface Conversation {
+  nmbrPeople: number
+  nom: String
+  createdAt: string
+}

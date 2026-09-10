@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { AuthResponse, LoginRequest, RegisterRequest } from '../models/model';
 import { ConfigService } from './config.service';
 import { CoockieService } from './coockie.service';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
