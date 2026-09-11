@@ -2,6 +2,8 @@ package com.naoufalayache.authentication.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,15 +32,19 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore 
     @Column(nullable = false)
     private String password;
 
+    @JsonIgnore
     @Column(nullable = false)
     private boolean enabled = true;
 
+    @JsonIgnore
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
