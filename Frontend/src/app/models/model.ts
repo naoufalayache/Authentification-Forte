@@ -57,3 +57,8 @@ export interface Conversation {
   nom: String
   createdAt: string
 }
+
+export interface CreateConv {
+  usersId: number[]
+  name: String
+}
