@@ -10,10 +10,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.naoufalayache.DTO.ConversationDTO;
+import com.naoufalayache.DTO.CreateConvDTO;
 import com.naoufalayache.DTO.ResponseDTO;
 import com.naoufalayache.authentication.model.Conversation;
+import com.naoufalayache.authentication.model.ConversationMember;
 import com.naoufalayache.authentication.repository.ConversationMemberRepository;
 import com.naoufalayache.authentication.repository.ConversationRepository;
+import com.naoufalayache.authentication.repository.UserRepository;
 import com.naoufalayache.authentication.services.ConversationService;
 import com.naoufalayache.exception.AppError;
 
@@ -21,10 +24,12 @@ public class ConversationServiceImpl implements ConversationService {
 
     private final ConversationRepository conversationRepository;
     private final ConversationMemberRepository conversationMemberRepository;
+    private final UserRepository userRepository;
 
-    public ConversationServiceImpl(ConversationRepository conversationRepository, ConversationMemberRepository conversationMemberRepository) {
+    public ConversationServiceImpl(ConversationRepository conversationRepository, ConversationMemberRepository conversationMemberRepository, UserRepository userRepository) {
         this.conversationRepository = conversationRepository;
         this.conversationMemberRepository = conversationMemberRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -34,6 +39,7 @@ public class ConversationServiceImpl implements ConversationService {
         return new ResponseDTO(HttpStatus.CREATED, "Conversation supprimé avec succès");
     }
 
+    @Override
     public Optional<Conversation> findById(Long id) {
         return this.conversationRepository.findById(id);
     }
@@ -64,5 +70,23 @@ public class ConversationServiceImpl implements ConversationService {
                     return dto;
                 })
                 .toList();
+    }
+
+    @Override
+    @Transactional 
+    public ResponseDTO create(CreateConvDTO createConvDTO) {
+        Conversation conversation = new Conversation();
+        conversation.setName(createConvDTO.getName());
+        conversation.setType(createConvDTO.getType());
+        conversationRepository.save(conversation);
+
+        for(Long userId : createConvDTO.getUsersId()){
+            ConversationMember conversationMember = new ConversationMember();
+            conversationMember.setConversation(conversation);
+            conversationMember.setUser(userRepository.findById(userId).orElseThrow(() -> new AppError("Utilisateur introuvable : " + userId)));
+            conversationMemberRepository.save(conversationMember);
+        }
+
+        return new ResponseDTO(HttpStatus.CREATED, "Conversation créée avec succès");
     }
 }
