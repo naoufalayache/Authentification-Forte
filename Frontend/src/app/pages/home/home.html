@@ -4,11 +4,26 @@
 </div>
 
 @if (pseudo !== null) {
-<p>
-    Bonjour {{ pseudo }}
-</p>
-} @else{
-<p>
-    Bienvenue sur l'application.
-</p>
+<p>Bonjour {{ pseudo }}</p>
+} @else {
+<p>Bienvenue sur l'application.</p>
 }
+
+<div class="search">
+    <input #searchInput type="search" placeholder="Rechercher un utilisateur..." aria-label="Rechercher un utilisateur"
+        (keyup.enter)="handleSearch(searchInput.value)" />
+
+    <button (click)="handleSearch(searchInput.value)">
+        Rechercher
+    </button>
+</div>
+
+@if (messageEmpty.bool) {
+<p>{{messageEmpty.str}}</p>
+}
+<p>Nombre d'utilisateurs pouvant correspondre : {{ users().length }}</p>
+<div class="user-list">
+    @for (user of users(); track user.id) {
+        <p class="user-item">{{ user.email }}</p>
+    }   
+</div>

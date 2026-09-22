@@ -12,11 +12,11 @@ export class UserService {
     private configService: ConfigService,
   ) {}
 
-  getUserByEmail(email: string, page: number, size: number) {
+  getUserByEmail(email: string, page: number | null, size: number) {
     const params = new HttpParams()
       .set('email', email)
-      .set('page', page)
-      .set('size', size);
+      .set('page', page ? page : 0)
+      .set('size', size ? size : 20);
     return this.http.get<User[]>(`${this.configService.apiUrl}/user`,{params})
   }
 }

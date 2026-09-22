@@ -21,6 +21,11 @@ export interface AuthResponse {
   token: string;
 }
 
+export interface MessageFromResponse{
+  bool: boolean;
+  str: string;
+}
+
 export interface Config {
   apiUrl: string;
 }
