@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -20,6 +21,7 @@ import com.naoufalayache.authentication.repository.UserRepository;
 import com.naoufalayache.authentication.services.ConversationService;
 import com.naoufalayache.exception.AppError;
 
+@Service 
 public class ConversationServiceImpl implements ConversationService {
 
     private final ConversationRepository conversationRepository;

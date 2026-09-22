@@ -6,12 +6,14 @@ import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import com.naoufalayache.authentication.model.User;
 import com.naoufalayache.authentication.repository.UserRepository;
 import com.naoufalayache.authentication.services.UserService;
 import com.naoufalayache.exception.AppError;
 
+@Service 
 public class UserServiceImpl implements UserService {
     
     private final UserRepository userRepository;
