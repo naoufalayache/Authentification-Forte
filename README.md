@@ -42,7 +42,7 @@ L'objectif est également de faire évoluer progressivement le système d'authen
 - Angular
 - TypeScript
 - HTML
-- CSS
+- CSS -> IA
 - Angular Reactive Forms
 - Angular Router
 
